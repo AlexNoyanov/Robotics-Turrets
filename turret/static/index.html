@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Turret · X/Y test</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="29" height="29" fill="none" stroke="#fff" stroke-width="2"/>
+      </svg>
+      <div>
+        <div class="name">TURRET</div>
+        <div class="sub">X / Y STEPPERS</div>
+      </div>
+    </div>
+    <div class="hdr-title">HARDWARE TEST</div>
+    <div class="link">
+      <a class="quest" href="/vr">QUEST</a>
+      <span id="dot" class="dot"></span>
+      <select id="port" aria-label="Serial port"></select>
+      <span id="link">LOOKING</span>
+    </div>
+  </header>
+
+  <section class="telemetry">
+    <div class="readout">
+      <div class="kicker">AZIMUTH · X</div>
+      <div class="deg"><span id="xDeg">—</span><span class="unit">°</span></div>
+      <div class="meta"><span id="xSteps">— STEPS</span><span id="xRate">0 ST/S</span></div>
+      <div id="xTurns" class="turns"></div>
+    </div>
+    <div class="readout">
+      <div class="kicker">ELEVATION · Y</div>
+      <div class="deg"><span id="yDeg">—</span><span class="unit">°</span></div>
+      <div class="meta"><span id="ySteps">— STEPS</span><span id="yRate">0 ST/S</span></div>
+      <div id="yTurns" class="turns"></div>
+    </div>
+    <div class="sliders">
+      <label class="slider">
+        <span>RATE <b id="rateVal">500</b> ST/S</span>
+        <input id="rate" type="range" min="40" max="4000" step="10" value="500">
+      </label>
+      <label class="slider">
+        <span>ACCEL <b id="accVal">3000</b></span>
+        <input id="acc" type="range" min="200" max="20000" step="100" value="3000">
+      </label>
+    </div>
+    <div class="arm-col">
+      <div id="driver" class="driver">DRIVERS OFF</div>
+      <button id="arm" type="button">ENABLE</button>
+      <button id="stop" type="button" class="stop">STOP</button>
+    </div>
+  </section>
+
+  <section class="stage">
+    <div class="elev">
+      <div class="elev-cap">+180</div>
+      <div class="elev-track">
+        <div class="elev-mid"></div>
+        <div id="elevMark" class="elev-mark"></div>
+      </div>
+      <div class="elev-cap">−180</div>
+      <div class="elev-name">Y</div>
+    </div>
+
+    <div class="instrument" id="instrument">
+      <svg id="dial" viewBox="0 0 100 100" aria-hidden="true">
+        <circle class="ring" cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="0.35"/>
+        <circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="0.25"/>
+        <g id="ticks"></g>
+        <text x="50" y="8.2" text-anchor="middle" class="tick-label">0</text>
+        <text x="93.5" y="51.2" text-anchor="middle" class="tick-label dim">90</text>
+        <text x="50" y="96.5" text-anchor="middle" class="tick-label dim">180</text>
+        <text x="6.5" y="51.2" text-anchor="middle" class="tick-label dim">270</text>
+        <g id="needle">
+          <line x1="50" y1="50" x2="50" y2="9" stroke="#fff" stroke-width="0.6"/>
+          <polygon points="50,6.2 48.6,11 51.4,11" fill="#fff"/>
+          <circle cx="50" cy="50" r="1.15" fill="#fff"/>
+        </g>
+      </svg>
+      <div id="reticle" class="reticle"></div>
+      <div id="pad" class="pad" role="application" aria-label="Drag to jog azimuth and elevation. Release to stop."></div>
+      <div id="standby" class="standby">ENABLE TO JOG</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="bumps" role="radiogroup" aria-label="Bump size">
+      <span class="foot-label">BUMP</span>
+      <label><input type="radio" name="bump" value="step">1 STEP</label>
+      <label><input type="radio" name="bump" value="1">1°</label>
+      <label><input type="radio" name="bump" value="15" checked>15°</label>
+      <label><input type="radio" name="bump" value="45">45°</label>
+      <label><input type="radio" name="bump" value="90">90°</label>
+    </div>
+
+    <div class="holds">
+      <button type="button" class="hold" data-axis="x" data-sign="-1">X −</button>
+      <button type="button" class="hold" data-axis="x" data-sign="1">X +</button>
+      <button type="button" class="hold" data-axis="y" data-sign="-1">Y −</button>
+      <button type="button" class="hold" data-axis="y" data-sign="1">Y +</button>
+    </div>
+
+    <div class="setup">
+      <label class="select">
+        <span>STEPS / REV</span>
+        <select id="spr" aria-label="Steps per revolution">
+          <option value="200">FULL · 200</option>
+          <option value="400">HALF · 400</option>
+          <option value="800">1/4 · 800</option>
+          <option value="1600">1/8 · 1600</option>
+          <option value="3200" selected>1/16 · 3200</option>
+          <option value="6400">1/32 · 6400</option>
+        </select>
+      </label>
+      <label class="check"><input id="invX" type="checkbox">INVERT X</label>
+      <label class="check"><input id="invY" type="checkbox">INVERT Y</label>
+      <button id="zero" type="button">SET ZERO</button>
+    </div>
+
+    <p id="fault" class="fault"></p>
+    <p class="hint">
+      DRAG INSIDE THE DIAL · TAP X Y FOR A BUMP, HOLD TO JOG · ARROWS JOG · SPACE STOPS · E ENABLES
+      · UNO CNC SHIELD · X STEP 2 DIR 5 · Y STEP 3 DIR 6 · ENABLE 8 ACTIVE LOW
+      · PULL THE EN JUMPER · MOTOR POWER IS THE SHIELD SUPPLY, NOT USB
+      · A4988 WITH ALL JUMPERS ON IS 1/16
+    </p>
+    <p id="last" class="last"></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

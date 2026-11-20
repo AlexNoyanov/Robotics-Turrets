@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Turret · Quest</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="vr.css?v=2">
+</head>
+<body class="vr-body">
+  <header>
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="29" height="29" fill="none" stroke="#fff" stroke-width="2"/>
+      </svg>
+      <div>
+        <div class="name">TURRET</div>
+        <div class="sub">QUEST HEAD TRACK</div>
+      </div>
+    </div>
+    <div class="hdr-title">CAMERA FPV</div>
+    <div class="link">
+      <a class="quest" href="/">BENCH</a>
+      <span id="dot" class="dot"></span>
+      <span id="link">LOOKING</span>
+    </div>
+  </header>
+
+  <main class="vr-main">
+    <section class="preview-col">
+      <div class="preview">
+        <img id="preview" alt="Turret camera" src="/api/camera.mjpg">
+        <div id="previewNote" class="preview-note">WAITING FOR CAMERA</div>
+      </div>
+      <div class="live-row">
+        <span id="camStat">CAMERA</span>
+        <span id="azStat">X —</span>
+        <span id="elStat">Y —</span>
+      </div>
+      <button id="enter" type="button" class="enter">ENTER VR</button>
+      <p id="fault" class="fault"></p>
+      <p class="hint">LOOK AND THE TURRET FOLLOWS YOUR HEAD. TRIGGER OR A SETS CENTER. B STOPS.</p>
+    </section>
+
+    <section class="side">
+      <div class="vr-controls">
+        <button id="arm" type="button">ENABLE</button>
+        <button id="stop" type="button">STOP</button>
+        <label class="slider">
+          <span>RANGE <b id="scaleVal">12</b>×</span>
+          <input id="scale" type="range" min="1" max="40" step="1" value="12">
+        </label>
+        <label class="slider">
+          <span>RATE <b id="rateVal">8000</b> ST/S</span>
+          <input id="rate" type="range" min="200" max="12000" step="100" value="8000">
+        </label>
+        <label class="slider">
+          <span>YAW LIMIT <b id="yawVal">720</b>°</span>
+          <input id="yawLim" type="range" min="30" max="1080" step="30" value="720">
+        </label>
+        <label class="slider">
+          <span>PITCH LIMIT <b id="pitchVal">180</b>°</span>
+          <input id="pitchLim" type="range" min="20" max="360" step="10" value="180">
+        </label>
+        <label class="select">
+          <span>STEPS / REV</span>
+          <select id="spr" aria-label="Steps per revolution">
+            <option value="200">FULL · 200</option>
+            <option value="400">HALF · 400</option>
+            <option value="800">1/4 · 800</option>
+            <option value="1600">1/8 · 1600</option>
+            <option value="3200" selected>1/16 · 3200</option>
+            <option value="6400">1/32 · 6400</option>
+          </select>
+        </label>
+        <label class="check"><input id="flipYaw" type="checkbox">FLIP YAW</label>
+        <label class="check"><input id="flipPitch" type="checkbox">FLIP PITCH</label>
+      </div>
+
+      <ol class="steps" id="steps">
+        <li>Nothing installs from the store. Open the Quest Browser, not Quest Link.</li>
+        <li>Pause AmneziaVPN on this PC, or exclude the home network. While that VPN owns the local route, the headset gets no reply.</li>
+        <li>In the Quest Browser open <a id="wifiUrl" href="https://192.168.1.65:8443/vr">https://192.168.1.65:8443/vr</a>. Continue past the certificate warning.</li>
+        <li>Tap Enter VR and look. Yaw turns X, pitch turns Y. Trigger or A sets the direction you are facing as center. B stops.</li>
+        <li>If Enter VR stays off, plug the headset into this PC, allow USB debugging, and run <span class="mono">turret\quest.ps1</span>. Then open <a id="usbUrl" href="/vr">http://127.0.0.1:8092/vr</a>.</li>
+      </ol>
+    </section>
+  </main>
+
+  <canvas id="paint" width="1280" height="720" hidden></canvas>
+  <canvas id="xr" hidden></canvas>
+  <script src="vr.js?v=5"></script>
+</body>
+</html>
